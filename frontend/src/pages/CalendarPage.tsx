@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { fetchCounselors, fetchAvailability, type Counselor, type Slot } from '../api/client'
+import AlgorithmArt from '../components/AlgorithmArt'
 import './CalendarPage.css'
 
 const PERIOD_LABEL: Record<string, string> = { morning: '上午', afternoon: '下午' }
@@ -114,6 +115,7 @@ export default function CalendarPage() {
 
   return (
     <div className="calendar-page">
+      <AlgorithmArt opacity={0.08} particleCount={40} />
       <header className="calendar-header">
         <div className="title-block">
           <span className="college-badge">长空学院</span>

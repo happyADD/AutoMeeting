@@ -1,7 +1,17 @@
 .calendar-page {
+  position: relative;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0;
+  min-height: 100vh;
+}
+
+.calendar-page > .algorithm-art {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .calendar-header {
@@ -46,26 +56,26 @@
   padding: 0.6rem 1rem;
   font-size: 1rem;
   min-width: 180px;
-  border: 1px solid var(--apple-gray3);
+  border: 1px solid var(--border-medium);
   border-radius: 12px;
-  background: var(--apple-card-background);
-  color: var(--apple-text-primary);
+  background: var(--background-card);
+  color: var(--text-primary);
   transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .counselor-search input:focus {
-  border-color: var(--apple-blue);
+  border-color: var(--primary-blue);
   box-shadow: 0 0 0 3px rgba(0, 59, 115, 0.15);
 }
 
 .counselor-search input::placeholder {
-  color: var(--apple-gray);
+  color: var(--text-tertiary);
 }
 
 .calendar-header .admin-link {
   margin-left: 0;
   padding: 0.6rem 1.2rem;
-  color: var(--apple-blue);
+  color: var(--primary-blue);
   text-decoration: none;
   font-size: 0.95rem;
   border-radius: 12px;
@@ -90,7 +100,7 @@
   font-size: 1rem;
   border-radius: 12px;
   background: var(--apple-gray5);
-  color: var(--apple-text-primary);
+  color: var(--text-primary);
   border: 1px solid var(--apple-border);
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -122,7 +132,7 @@
   overflow-x: auto;
   margin: 0 1.5rem 2rem;
   border-radius: 20px;
-  background: var(--apple-card-background);
+  background: var(--background-card);
   box-shadow: var(--apple-shadow);
   border: 1px solid var(--apple-border);
 }
@@ -167,7 +177,7 @@
 .counselor-header-name {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--apple-text-primary);
+  color: var(--text-primary);
 }
 
 .counselor-period-row {
@@ -229,7 +239,7 @@
 
 .slot-unavailable {
   background: var(--apple-gray5);
-  color: var(--apple-gray);
+  color: var(--text-tertiary);
   cursor: not-allowed;
   border-color: var(--apple-border);
 }
@@ -274,15 +284,15 @@
   padding: 0.8rem 1.2rem;
   font-size: 1rem;
   min-width: 280px;
-  border: 1px solid var(--apple-gray3);
+  border: 1px solid var(--border-medium);
   border-radius: 12px;
-  background: var(--apple-card-background);
-  color: var(--apple-text-primary);
+  background: var(--background-card);
+  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .counselor-filter-center select:focus {
-  border-color: var(--apple-blue);
+  border-color: var(--primary-blue);
   box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
 }

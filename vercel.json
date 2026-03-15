@@ -26,7 +26,6 @@
     }
   ],
   "env": {
-    "PYTHON_VERSION": "3.10",
-    "DATABASE_URL": "sqlite+aiosqlite:///./automeeting.db"
+    "PYTHON_VERSION": "3.10"
   }
 }
