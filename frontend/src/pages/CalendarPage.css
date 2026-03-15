@@ -137,6 +137,17 @@
   font-weight: 600;
   background: var(--apple-gray5);
   font-size: 0.95rem;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.day-date {
+  font-size: 0.9rem;
+}
+
+.day-weekday {
+  font-size: 0.75rem;
+  color: var(--apple-text-secondary);
 }
 
 .counselor-group {

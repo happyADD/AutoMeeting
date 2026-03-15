@@ -4,6 +4,9 @@ import { fetchCounselors, fetchAvailability, type Counselor, type Slot } from '.
 import './CalendarPage.css'
 
 const PERIOD_LABEL: Record<string, string> = { morning: '上午', afternoon: '下午' }
+const WEEKDAY_LABEL: Record<number, string> = {
+  1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六', 0: '日'
+}
 const SLOT_WEEKS = 1
 const DAYS_PER_WEEK = 7
 
@@ -143,7 +146,8 @@ export default function CalendarPage() {
             <div className="cell header-label">辅导员</div>
             {days.map((d, i) => (
               <div key={i} className="cell head">
-                {d.getMonth() + 1}/{d.getDate()}
+                <div className="day-date">{d.getMonth() + 1}/{d.getDate()}</div>
+                <div className="day-weekday">{WEEKDAY_LABEL[d.getDay()]}</div>
               </div>
             ))}
           </div>
