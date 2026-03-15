@@ -1,13 +1,12 @@
 """Vercel Python API entry point at root api/ directory.
-Forward to the actual backend entry point in backend/api/
+Properly imports the FastAPI app from backend/ with correct path setup.
 """
 import sys
 import os
 
-# Add the backend directory to the path
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
+# Add the backend directory to the path (correctly)
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
-from backend.api.index import app
+from app.main import app
 
 # Vercel expects the app to be named 'app'
-# This file just forwards from root api/ to backend/api/
