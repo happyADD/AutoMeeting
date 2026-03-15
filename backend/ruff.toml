@@ -1,0 +1,14 @@
+# Ruff configuration for AutoMeeting backend
+
+# Exclude test files from linting
+exclude = ["tests/", "venv/", ".venv/", "__pycache__/"]
+
+# Ignore specific rules
+[lint]
+ignore = [
+    "F401",  # imported but unused (for __init__.py re-exports)
+]
+
+# Rule settings
+[lint.per-file-ignores]
+"tests/*" = ["F401"]  # Allow unused imports in test files
