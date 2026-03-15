@@ -137,7 +137,10 @@ export default function AdminPage() {
   return (
     <div className="admin-page">
       <header className="admin-header">
-        <h1>管理后台</h1>
+        <div className="title-block">
+          <span className="college-badge">长空学院</span>
+          <h1>管理后台</h1>
+        </div>
         <button type="button" className="back" onClick={() => navigate('/')}>
           返回预约页
         </button>

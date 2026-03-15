@@ -10,6 +10,7 @@ export default function SuccessPage() {
 
   return (
     <div className="success-page">
+      <span className="college-badge">长空学院</span>
       <h1>预约成功</h1>
       <p className="message">
         您的预约已提交。若已配置邮件，辅导员将收到通知。

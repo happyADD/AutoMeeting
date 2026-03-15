@@ -11,6 +11,20 @@
   margin-bottom: 2rem;
 }
 
+.title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.college-badge {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--changkong-accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
 .book-header h1 {
   margin: 0;
   font-size: 28px;

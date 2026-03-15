@@ -10,6 +10,16 @@
   animation: scaleIn 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
+.success-page .college-badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--changkong-accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
 @keyframes scaleIn {
   0% {
     opacity: 0;

@@ -3,8 +3,10 @@
 }
 
 :root {
-  /* Apple system color palette */
-  --apple-blue: #007aff;
+  /* Nanjing University of Aeronautics and Astronautics / Changkong College Brand Colors */
+  --nuaa-blue: #003B73;        /* NUAA official deep blue */
+  --nuaa-blue-light: #1a5a96;  /* Lighter shade for hover */
+  --changkong-accent: #0072bd; /* Changkong College accent blue */
   --apple-green: #34c759;
   --apple-red: #ff3b30;
   --apple-orange: #ff9500;
@@ -21,6 +23,9 @@
   --apple-border: #e5e5ea;
   --apple-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   --apple-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+
+  /* Use NUAA blue as primary */
+  --apple-blue: var(--nuaa-blue);
 }
 
 body {

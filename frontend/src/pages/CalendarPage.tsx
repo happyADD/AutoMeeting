@@ -91,7 +91,10 @@ export default function CalendarPage() {
   return (
     <div className="calendar-page">
       <header className="calendar-header">
-        <h1>谈话预约与查询</h1>
+        <div className="title-block">
+          <span className="college-badge">长空学院</span>
+          <h1>谈话预约与查询</h1>
+        </div>
         <Link to="/admin" className="admin-link">管理后台</Link>
         {selectedCounselorId && (
           <div className="counselor-filter">

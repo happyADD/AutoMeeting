@@ -74,7 +74,10 @@ export default function BookPage() {
   return (
     <div className="book-page">
       <header className="book-header">
-        <h1>填写预约</h1>
+        <div className="title-block">
+          <span className="college-badge">长空学院</span>
+          <h1>填写预约</h1>
+        </div>
         <button type="button" className="back" onClick={() => navigate('/')}>
           返回日历
         </button>
