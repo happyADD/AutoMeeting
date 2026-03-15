@@ -10,7 +10,6 @@ backend/venv/
 
 # Build output
 dist/
-!frontend/dist/
 build/
 *.log
 
