@@ -1,0 +1,164 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  /* Apple system color palette */
+  --apple-blue: #007aff;
+  --apple-green: #34c759;
+  --apple-red: #ff3b30;
+  --apple-orange: #ff9500;
+  --apple-yellow: #ffcc00;
+  --apple-gray: #8e8e93;
+  --apple-gray2: #c7c7cc;
+  --apple-gray3: #d1d1d6;
+  --apple-gray4: #e5e5ea;
+  --apple-gray5: #f2f2f7;
+  --apple-background: #f5f5f7;
+  --apple-card-background: #ffffff;
+  --apple-text-primary: #1c1c1e;
+  --apple-text-secondary: #636366;
+  --apple-border: #e5e5ea;
+  --apple-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --apple-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: var(--apple-background);
+  color: var(--apple-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.47;
+  letter-spacing: -0.24px;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Global button styling */
+button {
+  font-family: inherit;
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+button:hover:not(:disabled) {
+  transform: scale(1.02);
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Input styling */
+input, select, textarea {
+  font-family: inherit;
+  transition: border-color 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+}
+
+/* Primary button style */
+.btn-primary {
+  background: var(--apple-blue);
+  color: white;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 17px;
+  font-weight: 400;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--apple-blue) 90%, black);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Secondary button style */
+.btn-secondary {
+  background: var(--apple-gray5);
+  color: var(--apple-text-primary);
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 17px;
+  font-weight: 400;
+  border: 1px solid var(--apple-border);
+}
+
+/* Card style */
+.card {
+  background: var(--apple-card-background);
+  border-radius: 20px;
+  box-shadow: var(--apple-shadow);
+  border: 1px solid var(--apple-border);
+}
+
+/* Glassmorphism for headers */
+.glass-header {
+  background: rgba(245, 245, 247, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--apple-border);
+}
+
+/* Typography */
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+}
+
+h3 {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+
+.text-secondary {
+  color: var(--apple-text-secondary);
+}
+
+/* Form elements */
+.form-field {
+  margin-bottom: 20px;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--apple-text-primary);
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 17px;
+  border: 1px solid var(--apple-gray3);
+  border-radius: 12px;
+  background: var(--apple-card-background);
+  color: var(--apple-text-primary);
+}
+
+.form-input::placeholder {
+  color: var(--apple-gray);
+}

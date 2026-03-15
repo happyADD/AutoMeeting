@@ -1,0 +1,169 @@
+.calendar-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.calendar-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.5rem 1.5rem 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  border-radius: 0 0 20px 20px;
+}
+
+.calendar-header .admin-link {
+  margin-left: auto;
+  padding: 0.6rem 1.2rem;
+  color: var(--apple-blue);
+  text-decoration: none;
+  font-size: 1rem;
+  border-radius: 12px;
+  transition: background-color 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.calendar-header .admin-link:hover {
+  background-color: var(--apple-gray5);
+  text-decoration: none;
+}
+
+.calendar-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.counselor-filter {
+  display: flex;
+  align-items: center;
+}
+
+.counselor-filter select {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  min-width: 220px;
+  border: 1px solid var(--apple-gray3);
+  border-radius: 12px;
+  background: var(--apple-card-background);
+  color: var(--apple-text-primary);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.counselor-filter select:focus {
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+}
+
+.calendar-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1.5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.calendar-toolbar button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  background: var(--apple-gray5);
+  color: var(--apple-text-primary);
+  border: 1px solid var(--apple-border);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.calendar-toolbar button:hover:not(:disabled) {
+  background: var(--apple-gray4);
+  transform: scale(1.02);
+}
+
+.calendar-toolbar button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.loading, .hint {
+  color: var(--apple-text-secondary);
+  margin: 1rem 1.5rem;
+  font-size: 1rem;
+}
+
+.calendar-grid {
+  overflow-x: auto;
+  margin: 0 1.5rem 2rem;
+  border-radius: 20px;
+  background: var(--apple-card-background);
+  box-shadow: var(--apple-shadow);
+  border: 1px solid var(--apple-border);
+}
+
+.calendar-row {
+  display: grid;
+  grid-template-columns: 140px repeat(14, 1fr);
+  min-width: 880px;
+}
+
+.calendar-row.header .cell {
+  font-weight: 600;
+  background: var(--apple-gray5);
+  font-size: 0.95rem;
+}
+
+.cell {
+  padding: 0.8rem 0.5rem;
+  border-bottom: 1px solid var(--apple-border);
+  border-right: 1px solid var(--apple-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+}
+
+.cell:last-child {
+  border-right: none;
+}
+
+.cell.label {
+  justify-content: flex-start;
+  padding-left: 1rem;
+  font-size: 0.95rem;
+  color: var(--apple-text-primary);
+  font-weight: 500;
+  background: var(--apple-gray5);
+}
+
+.cell button {
+  padding: 0.5rem 0.8rem;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  font-size: 0.9rem;
+  width: 100%;
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.slot-available {
+  background: var(--apple-green);
+  color: #fff;
+  border-color: var(--apple-green);
+}
+
+.slot-available:hover {
+  background: color-mix(in srgb, var(--apple-green) 90%, black);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
+}
+
+.slot-unavailable {
+  background: var(--apple-gray5);
+  color: var(--apple-gray);
+  cursor: not-allowed;
+  border-color: var(--apple-border);
+}
