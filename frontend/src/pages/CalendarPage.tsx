@@ -55,8 +55,16 @@ export default function CalendarPage() {
       .finally(() => setLoading(false))
   }, [selectedCounselorId, startStr, endStr])
 
-  const slotSet = useMemo(
-    () => new Set(slots.map((s) => `${s.date}|${s.period}|${s.hour}`)),
+  // Check which (date, period) have available slots
+  const periodHasAvailability = useMemo(
+    () => {
+      const map = new Map<string, boolean>()
+      slots.forEach((s) => {
+        const key = `${s.date}|${s.period}`
+        map.set(key, true) // If any slot exists in this period, mark as available
+      })
+      return map
+    },
     [slots]
   )
 
@@ -70,10 +78,10 @@ export default function CalendarPage() {
     return list
   }, [weekStart])
 
-  const handleSlotClick = (date: string, period: string, hour: number) => {
+  const handleSlotClick = (date: string, period: string) => {
     if (!selectedCounselorId) return
     navigate('/book', {
-      state: { counselorId: selectedCounselorId, date, period, hour },
+      state: { counselorId: selectedCounselorId, date, period },
     })
   }
 
@@ -128,32 +136,29 @@ export default function CalendarPage() {
       {selectedCounselorId && !loading && (
         <div className="calendar-grid">
           <div className="calendar-row header">
-            <div className="cell head">日期</div>
+            <div className="cell head">时段</div>
             {days.map((d, i) => (
               <div key={i} className="cell head">
                 {d.getMonth() + 1}/{d.getDate()}
               </div>
             ))}
           </div>
-          {([
-            ['morning', 8], ['morning', 9], ['morning', 10], ['morning', 11],
-            ['afternoon', 14], ['afternoon', 15], ['afternoon', 16], ['afternoon', 17],
-          ] as const).map(([period, hour]) => (
-            <div key={`${period}-${hour}`} className="calendar-row">
+          {(['morning', 'afternoon'] as const).map((period) => (
+            <div key={period} className="calendar-row">
               <div className="cell label">
-                {PERIOD_LABEL[period]} {hour}:00
+                {PERIOD_LABEL[period]}
               </div>
               {days.map((d) => {
                 const dateStr = formatDate(d)
-                const key = `${dateStr}|${period}|${hour}`
-                const available = slotSet.has(key)
+                const key = `${dateStr}|${period}`
+                const available = periodHasAvailability.has(key)
                 return (
                   <div key={dateStr} className="cell">
                     <button
                       type="button"
                       className={available ? 'slot-available' : 'slot-unavailable'}
                       disabled={!available}
-                      onClick={() => available && handleSlotClick(dateStr, period as 'morning' | 'afternoon', hour)}
+                      onClick={() => available && handleSlotClick(dateStr, period)}
                     >
                       {available ? '可约' : '—'}
                     </button>

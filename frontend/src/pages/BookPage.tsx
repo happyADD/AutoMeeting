@@ -21,7 +21,11 @@ export default function BookPage() {
   const [counselorId, setCounselorId] = useState<number>(state.counselorId ?? 0)
   const [date, setDate] = useState(state.date ?? '')
   const [period, setPeriod] = useState<'morning' | 'afternoon'>(state.period ?? 'morning')
-  const [hour, setHour] = useState(state.hour ?? 9)
+  const [hour, setHour] = useState<number>(() => {
+    // Default to first available hour for the period
+    if (state.hour !== undefined) return state.hour
+    return state.period === 'afternoon' ? 14 : 8
+  })
   const [content, setContent] = useState('')
   const [contactName, setContactName] = useState('')
   const [contactPhone, setContactPhone] = useState('')
@@ -36,7 +40,13 @@ export default function BookPage() {
   useEffect(() => {
     if (state.counselorId) setCounselorId(state.counselorId)
     if (state.date) setDate(state.date)
-    if (state.period) setPeriod(state.period)
+    if (state.period) {
+      setPeriod(state.period)
+      // If no hour specified from calendar, set default to first hour of the period
+      if (state.hour === undefined) {
+        setHour(state.period === 'afternoon' ? 14 : 8)
+      }
+    }
     if (state.hour !== undefined) setHour(state.hour)
   }, [state.counselorId, state.date, state.period, state.hour])
 
