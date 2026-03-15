@@ -10,12 +10,12 @@ router = APIRouter(prefix="/availability", tags=["availability"])
 
 @router.get("")
 async def availability(
-    counselor_id: int = Query(..., description="辅导员 ID"),
+    counselor_id: int | None = Query(None, description="辅导员 ID (可选，不传则返回所有辅导员)"),
     start_date: date = Query(..., description="开始日期 YYYY-MM-DD"),
     end_date: date = Query(..., description="结束日期 YYYY-MM-DD"),
     session: AsyncSession = Depends(get_db),
 ):
-    """Return available slots for the counselor in [start_date, end_date]."""
+    """Return available slots for the counselor (or all counselors if not specified) in [start_date, end_date]."""
     if start_date > end_date:
         return []
     return await get_availability(session, counselor_id, start_date, end_date)

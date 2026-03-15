@@ -4,7 +4,7 @@ import { fetchCounselors, fetchAvailability, type Counselor, type Slot } from '.
 import './CalendarPage.css'
 
 const PERIOD_LABEL: Record<string, string> = { morning: '上午', afternoon: '下午' }
-const SLOT_WEEKS = 2
+const SLOT_WEEKS = 1
 const DAYS_PER_WEEK = 7
 
 function formatDate(d: Date) {
@@ -20,10 +20,25 @@ function getWeekStart(d: Date): Date {
   return copy
 }
 
+// Simple fuzzy search - check if search text contains query, supports pinyin initials rough matching by name characters
+function fuzzyMatch(counselor: Counselor, query: string): boolean {
+  if (!query) return true
+  const q = query.toLowerCase().trim()
+  const fullText = `${counselor.employee_id} ${counselor.name}`.toLowerCase()
+  // Direct text contains
+  if (fullText.includes(q)) return true
+  // Simple initial matching: check if any character in query matches a character in name
+  const name = counselor.name.toLowerCase()
+  for (const ch of q) {
+    if (name.includes(ch)) return true
+  }
+  return false
+}
+
 export default function CalendarPage() {
   const navigate = useNavigate()
   const [counselors, setCounselors] = useState<Counselor[]>([])
-  const [selectedCounselorId, setSelectedCounselorId] = useState<number | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
   const [slots, setSlots] = useState<Slot[]>([])
   const [loading, setLoading] = useState(false)
   const [weekStart, setWeekStart] = useState(() => getWeekStart(new Date()))
@@ -31,37 +46,36 @@ export default function CalendarPage() {
   useEffect(() => {
     fetchCounselors().then((data) => {
       setCounselors(data)
-      // Auto-select first counselor when data loads
-      if (data.length > 0) {
-        setSelectedCounselorId(data[0].id)
-      }
     }).catch(console.error)
   }, [])
+
+  // Filter counselors based on search query
+  const filteredCounselors = useMemo(() => {
+    if (!searchQuery.trim()) return counselors
+    return counselors.filter(c => fuzzyMatch(c, searchQuery))
+  }, [counselors, searchQuery])
 
   const startStr = formatDate(weekStart)
   const endDate = new Date(weekStart)
   endDate.setDate(endDate.getDate() + SLOT_WEEKS * DAYS_PER_WEEK - 1)
   const endStr = formatDate(endDate)
 
+  // Fetch all availability for the date range
   useEffect(() => {
-    if (!selectedCounselorId) {
-      setSlots([])
-      return
-    }
     setLoading(true)
-    fetchAvailability(selectedCounselorId, startStr, endStr)
+    fetchAvailability(null, startStr, endStr)
       .then(setSlots)
       .catch(console.error)
       .finally(() => setLoading(false))
-  }, [selectedCounselorId, startStr, endStr])
+  }, [startStr, endStr])
 
-  // Check which (date, period) have available slots
-  const periodHasAvailability = useMemo(
+  // Check (counselorId, date, period) -> available?
+  const availabilityMap = useMemo(
     () => {
       const map = new Map<string, boolean>()
       slots.forEach((s) => {
-        const key = `${s.date}|${s.period}`
-        map.set(key, true) // If any slot exists in this period, mark as available
+        const key = `${s.counselor_id}|${s.date}|${s.period}`
+        map.set(key, true)
       })
       return map
     },
@@ -78,10 +92,9 @@ export default function CalendarPage() {
     return list
   }, [weekStart])
 
-  const handleSlotClick = (date: string, period: string) => {
-    if (!selectedCounselorId) return
+  const handleSlotClick = (counselorId: number, date: string, period: string) => {
     navigate('/book', {
-      state: { counselorId: selectedCounselorId, date, period },
+      state: { counselorId, date, period },
     })
   }
 
@@ -103,93 +116,80 @@ export default function CalendarPage() {
           <span className="college-badge">长空学院</span>
           <h1>谈话预约与查询</h1>
         </div>
+        <div className="counselor-search">
+          <input
+            type="text"
+            placeholder="搜索辅导员..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
         <Link to="/admin" className="admin-link">管理后台</Link>
-        {selectedCounselorId && (
-          <div className="counselor-filter">
-            <label>选择辅导员：</label>
-            <select
-              value={selectedCounselorId ?? ''}
-              onChange={(e) => setSelectedCounselorId(e.target.value ? Number(e.target.value) : null)}
-            >
-              <option value="">请选择</option>
-              {counselors.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.employee_id} - {c.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
       </header>
 
-      {selectedCounselorId && (
-        <div className="calendar-toolbar">
-          <button type="button" onClick={prevWeek}>上一周</button>
-          <span>
-            {weekStart.getFullYear()}年{weekStart.getMonth() + 1}月
-          </span>
-          <button type="button" onClick={nextWeek}>下一周</button>
-        </div>
-      )}
+      <div className="calendar-toolbar">
+        <button type="button" onClick={prevWeek}>上一周</button>
+        <span>
+          {weekStart.getFullYear()}年{weekStart.getMonth() + 1}月
+        </span>
+        <button type="button" onClick={nextWeek}>下一周</button>
+      </div>
 
       {loading && <p className="loading">加载中…</p>}
-      {selectedCounselorId && !loading && (
+      {!loading && (
         <div className="calendar-grid">
+          {/* Header row with days */}
           <div className="calendar-row header">
-            <div className="cell head">时段</div>
+            <div className="cell header-label">辅导员</div>
             {days.map((d, i) => (
               <div key={i} className="cell head">
                 {d.getMonth() + 1}/{d.getDate()}
               </div>
             ))}
           </div>
+
+          {/* For each period (morning / afternoon) */}
           {(['morning', 'afternoon'] as const).map((period) => (
-            <div key={period} className="calendar-row">
-              <div className="cell label">
-                {PERIOD_LABEL[period]}
+            <div key={period} className="period-group">
+              <div className="period-header">
+                <div className="period-title">{PERIOD_LABEL[period]}</div>
               </div>
-              {days.map((d) => {
-                const dateStr = formatDate(d)
-                const key = `${dateStr}|${period}`
-                const available = periodHasAvailability.has(key)
-                return (
-                  <div key={dateStr} className="cell">
-                    <button
-                      type="button"
-                      className={available ? 'slot-available' : 'slot-unavailable'}
-                      disabled={!available}
-                      onClick={() => available && handleSlotClick(dateStr, period)}
-                    >
-                      {available ? '可约' : '—'}
-                    </button>
+              {filteredCounselors.length === 0 && (
+                <div className="no-counselors">
+                  没有找到匹配的辅导员
+                </div>
+              )}
+              {filteredCounselors.map((counselor) => (
+                <div key={counselor.id} className="calendar-row counselor-row">
+                  <div className="cell counselor-label">
+                    <span className="counselor-name">{counselor.name}</span>
                   </div>
-                )
-              })}
+                  {days.map((d) => {
+                    const dateStr = formatDate(d)
+                    const key = `${counselor.id}|${dateStr}|${period}`
+                    const available = availabilityMap.has(key)
+                    return (
+                      <div key={`${counselor.id}|${dateStr}`} className="cell">
+                        <button
+                          type="button"
+                          className={available ? 'slot-available' : 'slot-unavailable'}
+                          disabled={!available}
+                          onClick={() => available && handleSlotClick(counselor.id, dateStr, period)}
+                        >
+                          {available ? '可约' : '—'}
+                        </button>
+                      </div>
+                    )
+                  })}
+                </div>
+              ))}
             </div>
           ))}
         </div>
       )}
 
-      {!selectedCounselorId && !loading && (
-        <div className="counselor-selection-center">
-          <div className="counselor-selection-card card">
-            <h2>选择辅导员</h2>
-            <p className="text-secondary">请选择一位辅导员查看可预约时段</p>
-            <div className="counselor-filter-center">
-              <select
-                value={selectedCounselorId ?? ''}
-                onChange={(e) => setSelectedCounselorId(e.target.value ? Number(e.target.value) : null)}
-              >
-                <option value="">请选择</option>
-                {counselors.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.employee_id} - {c.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
+      {counselors.length === 0 && !loading && (
+        <p className="empty-message">加载辅导员列表中...</p>
       )}
     </div>
   )

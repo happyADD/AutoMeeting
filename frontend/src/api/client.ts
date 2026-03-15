@@ -12,6 +12,7 @@ export type Slot = {
   date: string;
   period: 'morning' | 'afternoon';
   hour: number;
+  counselor_id: number;
 };
 
 export async function fetchCounselors(): Promise<Counselor[]> {
@@ -21,15 +22,17 @@ export async function fetchCounselors(): Promise<Counselor[]> {
 }
 
 export async function fetchAvailability(
-  counselorId: number,
+  counselorId: number | null,
   startDate: string,
   endDate: string
 ): Promise<Slot[]> {
   const params = new URLSearchParams({
-    counselor_id: String(counselorId),
     start_date: startDate,
     end_date: endDate,
   });
+  if (counselorId !== null) {
+    params.set('counselor_id', String(counselorId));
+  }
   const r = await fetch(`${API_BASE}/availability?${params}`);
   if (!r.ok) throw new Error('Failed to fetch availability');
   return r.json();

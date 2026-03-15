@@ -10,7 +10,7 @@
   z-index: 10;
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
   padding: 1.5rem 1.5rem 1rem;
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
@@ -38,12 +38,36 @@
   letter-spacing: -0.5px;
 }
 
-.calendar-header .admin-link {
+.counselor-search {
   margin-left: auto;
+}
+
+.counselor-search input {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  min-width: 180px;
+  border: 1px solid var(--apple-gray3);
+  border-radius: 12px;
+  background: var(--apple-card-background);
+  color: var(--apple-text-primary);
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.counselor-search input:focus {
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 3px rgba(0, 59, 115, 0.15);
+}
+
+.counselor-search input::placeholder {
+  color: var(--apple-gray);
+}
+
+.calendar-header .admin-link {
+  margin-left: 0;
   padding: 0.6rem 1.2rem;
   color: var(--apple-blue);
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 0.95rem;
   border-radius: 12px;
   transition: background-color 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
@@ -51,35 +75,6 @@
 .calendar-header .admin-link:hover {
   background-color: var(--apple-gray5);
   text-decoration: none;
-}
-
-.calendar-header h1 {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-}
-
-.counselor-filter {
-  display: flex;
-  align-items: center;
-}
-
-.counselor-filter select {
-  padding: 0.6rem 1rem;
-  font-size: 1rem;
-  min-width: 220px;
-  border: 1px solid var(--apple-gray3);
-  border-radius: 12px;
-  background: var(--apple-card-background);
-  color: var(--apple-text-primary);
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.counselor-filter select:focus {
-  border-color: var(--apple-blue);
-  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
 }
 
 .calendar-toolbar {
@@ -116,6 +111,13 @@
   font-size: 1rem;
 }
 
+.empty-message {
+  color: var(--apple-text-secondary);
+  margin: 2rem 1.5rem;
+  font-size: 1rem;
+  text-align: center;
+}
+
 .calendar-grid {
   overflow-x: auto;
   margin: 0 1.5rem 2rem;
@@ -127,14 +129,42 @@
 
 .calendar-row {
   display: grid;
-  grid-template-columns: 140px repeat(14, 1fr);
-  min-width: 880px;
+  grid-template-columns: 140px repeat(7, 1fr);
+  min-width: 700px;
 }
 
 .calendar-row.header .cell {
   font-weight: 600;
   background: var(--apple-gray5);
   font-size: 0.95rem;
+}
+
+.period-group {
+  border-bottom: 1px solid var(--apple-border);
+}
+
+.period-group:last-child {
+  border-bottom: none;
+}
+
+.period-header {
+  padding: 0.75rem 1rem;
+  background: var(--apple-gray5);
+  border-bottom: 1px solid var(--apple-border);
+}
+
+.period-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--apple-text-primary);
+}
+
+.counselor-row {
+  border-bottom: 1px solid var(--apple-border);
+}
+
+.counselor-row:last-child {
+  border-bottom: none;
 }
 
 .cell {
@@ -147,17 +177,30 @@
   min-height: 56px;
 }
 
+.counselor-label {
+  justify-content: flex-start;
+  padding-left: 1rem;
+  background: var(--apple-gray5);
+}
+
 .cell:last-child {
   border-right: none;
 }
 
-.cell.label {
+.header-label {
   justify-content: flex-start;
   padding-left: 1rem;
+  font-weight: 600;
+}
+
+.counselor-name {
   font-size: 0.95rem;
   color: var(--apple-text-primary);
   font-weight: 500;
-  background: var(--apple-gray5);
+}
+
+.counselor-label .counselor-name {
+  font-weight: 500;
 }
 
 .cell button {
@@ -187,6 +230,12 @@
   color: var(--apple-gray);
   cursor: not-allowed;
   border-color: var(--apple-border);
+}
+
+.no-counselors {
+  padding: 2rem;
+  text-align: center;
+  color: var(--apple-text-secondary);
 }
 
 /* Centered counselor selection when no selection */
