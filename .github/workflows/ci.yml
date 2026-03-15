@@ -42,6 +42,8 @@ jobs:
       - name: Run backend tests
         working-directory: backend
         run: pytest tests/ -v --tb=short
+        env:
+          PYTHONPATH: .
 
   # Frontend build and test
   frontend-test:
@@ -120,10 +122,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Audit Python dependencies
-        uses: snok/install-audit@v1
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          requirements: backend/requirements.txt
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Audit Python dependencies
+        run: |
+          pip install pip-audit
+          pip-audit -r backend/requirements.txt
 
       - name: Audit npm dependencies
         working-directory: frontend

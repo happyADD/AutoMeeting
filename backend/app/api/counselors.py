@@ -27,7 +27,7 @@ async def list_counselors(
     """Return counselors. Default: active only. Use ?all=true for admin."""
     q = select(Counselor).order_by(Counselor.employee_id)
     if not all:
-        q = q.where(Counselor.is_active == True)
+        q = q.where(Counselor.is_active.is_(True))
     result = await session.execute(q)
     rows = result.scalars().all()
     return [_counselor_to_dict(c) for c in rows]
