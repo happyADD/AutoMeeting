@@ -167,3 +167,50 @@
   cursor: not-allowed;
   border-color: var(--apple-border);
 }
+
+/* Centered counselor selection when no selection */
+.counselor-selection-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  padding: 2rem 1.5rem;
+}
+
+.counselor-selection-card {
+  padding: 3rem 2.5rem;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+}
+
+.counselor-selection-card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 24px;
+}
+
+.counselor-selection-card p {
+  margin: 0 0 2rem;
+}
+
+.counselor-filter-center {
+  display: flex;
+  justify-content: center;
+}
+
+.counselor-filter-center select {
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+  min-width: 280px;
+  border: 1px solid var(--apple-gray3);
+  border-radius: 12px;
+  background: var(--apple-card-background);
+  color: var(--apple-text-primary);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.counselor-filter-center select:focus {
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+}

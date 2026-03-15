@@ -29,7 +29,13 @@ export default function CalendarPage() {
   const [weekStart, setWeekStart] = useState(() => getWeekStart(new Date()))
 
   useEffect(() => {
-    fetchCounselors().then(setCounselors).catch(console.error)
+    fetchCounselors().then((data) => {
+      setCounselors(data)
+      // Auto-select first counselor when data loads
+      if (data.length > 0) {
+        setSelectedCounselorId(data[0].id)
+      }
+    }).catch(console.error)
   }, [])
 
   const startStr = formatDate(weekStart)
@@ -87,20 +93,22 @@ export default function CalendarPage() {
       <header className="calendar-header">
         <h1>谈话预约与查询</h1>
         <Link to="/admin" className="admin-link">管理后台</Link>
-        <div className="counselor-filter">
-          <label>选择辅导员：</label>
-          <select
-            value={selectedCounselorId ?? ''}
-            onChange={(e) => setSelectedCounselorId(e.target.value ? Number(e.target.value) : null)}
-          >
-            <option value="">请选择</option>
-            {counselors.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.employee_id} - {c.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {selectedCounselorId && (
+          <div className="counselor-filter">
+            <label>选择辅导员：</label>
+            <select
+              value={selectedCounselorId ?? ''}
+              onChange={(e) => setSelectedCounselorId(e.target.value ? Number(e.target.value) : null)}
+            >
+              <option value="">请选择</option>
+              {counselors.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.employee_id} - {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </header>
 
       {selectedCounselorId && (
@@ -155,7 +163,25 @@ export default function CalendarPage() {
       )}
 
       {!selectedCounselorId && !loading && (
-        <p className="hint">请先选择一位辅导员查看可预约时段。</p>
+        <div className="counselor-selection-center">
+          <div className="counselor-selection-card card">
+            <h2>选择辅导员</h2>
+            <p className="text-secondary">请选择一位辅导员查看可预约时段</p>
+            <div className="counselor-filter-center">
+              <select
+                value={selectedCounselorId ?? ''}
+                onChange={(e) => setSelectedCounselorId(e.target.value ? Number(e.target.value) : null)}
+              >
+                <option value="">请选择</option>
+                {counselors.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.employee_id} - {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )
