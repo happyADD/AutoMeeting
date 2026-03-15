@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || '/backend';
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 export type Counselor = {
   id: number;
@@ -16,7 +16,7 @@ export type Slot = {
 };
 
 export async function fetchCounselors(): Promise<Counselor[]> {
-  const r = await fetch(`${API_BASE}/counselors`);
+  const r = await fetch(`${API_BASE}/workers`);
   if (!r.ok) throw new Error('Failed to fetch counselors');
   return r.json();
 }
@@ -66,7 +66,7 @@ export async function createAppointment(body: CreateAppointmentBody): Promise<{ 
 // ---------- Admin API ----------
 
 export async function fetchCounselorsAdmin(): Promise<Counselor[]> {
-  const r = await fetch(`${API_BASE}/counselors?all=true`);
+  const r = await fetch(`${API_BASE}/workers?all=true`);
   if (!r.ok) throw new Error('Failed to fetch counselors');
   return r.json();
 }
@@ -75,7 +75,7 @@ export type CounselorCreate = { employee_id: string; name: string; email: string
 export type CounselorUpdate = { employee_id?: string; name?: string; email?: string; is_active?: boolean };
 
 export async function createCounselor(body: CounselorCreate): Promise<Counselor> {
-  const r = await fetch(`${API_BASE}/counselors`, {
+  const r = await fetch(`${API_BASE}/workers`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
@@ -88,7 +88,7 @@ export async function createCounselor(body: CounselorCreate): Promise<Counselor>
 }
 
 export async function updateCounselor(id: number, body: CounselorUpdate): Promise<Counselor> {
-  const r = await fetch(`${API_BASE}/counselors/${id}`, {
+  const r = await fetch(`${API_BASE}/workers/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
@@ -101,7 +101,7 @@ export async function updateCounselor(id: number, body: CounselorUpdate): Promis
 }
 
 export async function deleteCounselor(id: number): Promise<void> {
-  const r = await fetch(`${API_BASE}/counselors/${id}`, { method: 'DELETE' });
+  const r = await fetch(`${API_BASE}/workers/${id}`, { method: 'DELETE' });
   if (!r.ok) throw new Error('删除失败');
 }
 

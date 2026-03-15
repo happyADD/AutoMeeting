@@ -6,7 +6,7 @@ from sqlalchemy import select
 from app.db import get_db
 from app.models import Counselor
 
-router = APIRouter(prefix="/counselors", tags=["counselors"])
+router = APIRouter(prefix="/workers", tags=["workers"])
 
 
 def _counselor_to_dict(c: Counselor) -> dict:
