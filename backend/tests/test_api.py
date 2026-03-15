@@ -6,7 +6,7 @@ from datetime import date, timedelta
 
 @pytest.mark.asyncio
 async def test_list_counselors(client):
-    r = await client.get("/api/counselors")
+    r = await client.get("/api/workers")
     assert r.status_code == 200
     data = r.json()
     assert len(data) >= 2
