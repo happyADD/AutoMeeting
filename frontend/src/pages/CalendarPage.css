@@ -139,31 +139,31 @@
   font-size: 0.95rem;
 }
 
-.period-group {
+.counselor-group {
   border-bottom: 1px solid var(--apple-border);
 }
 
-.period-group:last-child {
+.counselor-group:last-child {
   border-bottom: none;
 }
 
-.period-header {
+.counselor-header {
   padding: 0.75rem 1rem;
   background: var(--apple-gray5);
   border-bottom: 1px solid var(--apple-border);
 }
 
-.period-title {
+.counselor-header-name {
   font-size: 1rem;
   font-weight: 600;
   color: var(--apple-text-primary);
 }
 
-.counselor-row {
+.counselor-period-row {
   border-bottom: 1px solid var(--apple-border);
 }
 
-.counselor-row:last-child {
+.counselor-period-row:last-child {
   border-bottom: none;
 }
 
@@ -177,10 +177,11 @@
   min-height: 56px;
 }
 
-.counselor-label {
+.period-label {
   justify-content: flex-start;
   padding-left: 1rem;
   background: var(--apple-gray5);
+  font-weight: 500;
 }
 
 .cell:last-child {
@@ -191,16 +192,6 @@
   justify-content: flex-start;
   padding-left: 1rem;
   font-weight: 600;
-}
-
-.counselor-name {
-  font-size: 0.95rem;
-  color: var(--apple-text-primary);
-  font-weight: 500;
-}
-
-.counselor-label .counselor-name {
-  font-weight: 500;
 }
 
 .cell button {

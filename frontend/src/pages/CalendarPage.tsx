@@ -148,28 +148,28 @@ export default function CalendarPage() {
             ))}
           </div>
 
-          {/* For each period (morning / afternoon) */}
-          {(['morning', 'afternoon'] as const).map((period) => (
-            <div key={period} className="period-group">
-              <div className="period-header">
-                <div className="period-title">{PERIOD_LABEL[period]}</div>
+          {/* For each counselor × (morning / afternoon) */}
+          {filteredCounselors.length === 0 && (
+            <div className="no-counselors">
+              没有找到匹配的辅导员
+            </div>
+          )}
+          {filteredCounselors.map((counselor) => (
+            <div key={counselor.id} className="counselor-group">
+              <div className="counselor-header">
+                <span className="counselor-header-name">{counselor.name}</span>
               </div>
-              {filteredCounselors.length === 0 && (
-                <div className="no-counselors">
-                  没有找到匹配的辅导员
-                </div>
-              )}
-              {filteredCounselors.map((counselor) => (
-                <div key={counselor.id} className="calendar-row counselor-row">
-                  <div className="cell counselor-label">
-                    <span className="counselor-name">{counselor.name}</span>
+              {(['morning', 'afternoon'] as const).map((period) => (
+                <div key={period} className="calendar-row counselor-period-row">
+                  <div className="cell period-label">
+                    {PERIOD_LABEL[period]}
                   </div>
                   {days.map((d) => {
                     const dateStr = formatDate(d)
                     const key = `${counselor.id}|${dateStr}|${period}`
                     const available = availabilityMap.has(key)
                     return (
-                      <div key={`${counselor.id}|${dateStr}`} className="cell">
+                      <div key={`${counselor.id}|${dateStr}|${period}`} className="cell">
                         <button
                           type="button"
                           className={available ? 'slot-available' : 'slot-unavailable'}
