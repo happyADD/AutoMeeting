@@ -32,3 +32,8 @@ htmlcov/
 
 # Temporary
 *.tmp
+
+# SQLite databases (never commit DB files)
+*.db
+*.sqlite
+*.sqlite3

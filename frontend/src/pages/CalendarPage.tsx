@@ -97,8 +97,13 @@ export default function CalendarPage() {
   }, [weekStart])
 
   const handleSlotClick = (counselorId: number, date: string, period: string) => {
+    // Pass the first actually-available hour so BookPage uses a valid slot
+    const firstAvailable = slots.find(
+      (s) => s.counselor_id === counselorId && s.date === date && s.period === period
+    )
+    const hour = firstAvailable?.hour ?? (period === 'afternoon' ? 14 : 8)
     navigate('/book', {
-      state: { counselorId, date, period },
+      state: { counselorId, date, period, hour },
     })
   }
 

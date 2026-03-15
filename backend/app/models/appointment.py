@@ -18,6 +18,7 @@ class Appointment(Base):
             "hour",
             unique=True,
             sqlite_where=text("status = 'confirmed'"),
+            postgresql_where=text("status = 'confirmed'"),
         ),
     )
 

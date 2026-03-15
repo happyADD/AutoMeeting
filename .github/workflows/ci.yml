@@ -99,6 +99,7 @@ jobs:
       - name: Seed database and start backend server
         working-directory: backend
         run: |
+          rm -f automeeting.db
           python -m scripts.seed_db
           uvicorn app.main:app --host 127.0.0.1 --port 8000 &
           echo "Waiting for backend to be ready..."
