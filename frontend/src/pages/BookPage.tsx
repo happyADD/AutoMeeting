@@ -124,8 +124,8 @@ export default function BookPage() {
             value={period}
             onChange={(e) => setPeriod(e.target.value as 'morning' | 'afternoon')}
           >
-            <option value="morning">上午</option>
-            <option value="afternoon">下午</option>
+            <option value="morning">{PERIOD_LABEL.morning}</option>
+            <option value="afternoon">{PERIOD_LABEL.afternoon}</option>
           </select>
         </div>
         <div className="field">

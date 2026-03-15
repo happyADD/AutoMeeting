@@ -6,7 +6,7 @@ from datetime import date, timedelta
 
 @pytest.mark.asyncio
 async def test_list_counselors(client):
-    r = await client.get("/counselors")
+    r = await client.get("/api/counselors")
     assert r.status_code == 200
     data = r.json()
     assert len(data) >= 2
@@ -17,7 +17,7 @@ async def test_list_counselors(client):
 async def test_availability_empty(client):
     start = date.today().isoformat()
     end = (date.today() + timedelta(days=7)).isoformat()
-    r = await client.get(f"/availability?counselor_id=1&start_date={start}&end_date={end}")
+    r = await client.get(f"/api/availability?counselor_id=1&start_date={start}&end_date={end}")
     assert r.status_code == 200
     slots = r.json()
     assert isinstance(slots, list)
@@ -30,7 +30,7 @@ async def test_create_appointment_success(client):
     start = date.today() + timedelta(days=1)
     with patch("app.api.appointments.send_appointment_email"):
         r = await client.post(
-            "/appointments",
+            "/api/appointments",
             json={
                 "counselor_id": 1,
                 "date": start.isoformat(),
@@ -64,9 +64,9 @@ async def test_create_appointment_conflict(client):
         "contact_phone": "13900000001",
     }
     with patch("app.api.appointments.send_appointment_email"):
-        r1 = await client.post("/appointments", json=payload)
+        r1 = await client.post("/api/appointments", json=payload)
     assert r1.status_code == 200
-    r2 = await client.post("/appointments", json=payload)
+    r2 = await client.post("/api/appointments", json=payload)
     assert r2.status_code == 409
 
 
@@ -74,7 +74,7 @@ async def test_create_appointment_conflict(client):
 async def test_create_appointment_validation(client):
     start = (date.today() + timedelta(days=1)).isoformat()
     r = await client.post(
-        "/appointments",
+        "/api/appointments",
         json={
             "counselor_id": 1,
             "date": start,

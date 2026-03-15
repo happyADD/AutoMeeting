@@ -1,7 +1,19 @@
 """Email service tests (content and mock SMTP)."""
+from email import message_from_string
 from unittest.mock import patch, MagicMock
 import pytest
 from app.services.email import send_appointment_email
+
+
+def _decode_email_body(raw_msg: str) -> str:
+    """Parse a raw MIME message and return the decoded text/plain body."""
+    parsed = message_from_string(raw_msg)
+    for part in parsed.walk():
+        if part.get_content_type() == "text/plain":
+            payload = part.get_payload(decode=True)
+            if payload:
+                return payload.decode("utf-8")
+    return ""
 
 
 def test_send_appointment_email_skips_when_smtp_not_configured():
@@ -53,10 +65,11 @@ def test_send_appointment_email_calls_smtp_when_configured():
             m_smtp.return_value.__enter__.return_value.sendmail.assert_called_once()
             call_args = m_smtp.return_value.__enter__.return_value.sendmail.call_args
             assert call_args[0][1] == ["counselor@test.com"]
-            body = call_args[0][2]
-            assert "2025-03-16" in body
-            assert "下午" in body
-            assert "14" in body
-            assert "心理辅导" in body
-            assert "小红" in body
-            assert "hong@test.com" in body
+            raw_msg = call_args[0][2]
+            decoded_body = _decode_email_body(raw_msg)
+            assert "2025-03-16" in decoded_body
+            assert "下午" in decoded_body
+            assert "14" in decoded_body
+            assert "心理辅导" in decoded_body
+            assert "小红" in decoded_body
+            assert "hong@test.com" in decoded_body
