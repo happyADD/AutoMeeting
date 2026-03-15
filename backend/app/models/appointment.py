@@ -1,5 +1,5 @@
 """Appointment model: 预约记录."""
-from sqlalchemy import String, Date, Integer, ForeignKey, DateTime, UniqueConstraint
+from sqlalchemy import String, Date, Integer, ForeignKey, DateTime, Index, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import date, datetime
 from app.db import Base
@@ -7,8 +7,18 @@ from app.db import Base
 
 class Appointment(Base):
     __tablename__ = "appointments"
+    # Partial unique index: only one *confirmed* booking per (counselor, date, period, hour).
+    # Cancelled appointments are excluded so the same slot can be re-booked after cancellation.
     __table_args__ = (
-        UniqueConstraint("counselor_id", "appointment_date", "period", "hour", name="uq_counselor_datetime"),
+        Index(
+            "uq_counselor_datetime_confirmed",
+            "counselor_id",
+            "appointment_date",
+            "period",
+            "hour",
+            unique=True,
+            sqlite_where=text("status = 'confirmed'"),
+        ),
     )
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)

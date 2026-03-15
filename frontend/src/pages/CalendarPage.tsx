@@ -122,7 +122,9 @@ export default function CalendarPage() {
           <h1>谈话预约与查询</h1>
         </div>
         <div className="counselor-search">
+          <label htmlFor="counselor-search">选择辅导员</label>
           <input
+            id="counselor-search"
             type="text"
             placeholder="搜索辅导员..."
             value={searchQuery}

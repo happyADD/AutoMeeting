@@ -7,16 +7,17 @@ test.describe('Calendar and booking flow', () => {
     await expect(page.getByLabel(/选择辅导员/)).toBeVisible()
   })
 
-  test('selecting counselor loads availability', async ({ page }) => {
+  test('calendar loads availability automatically', async ({ page }) => {
     await page.goto('/')
-    await page.getByLabel(/选择辅导员/).selectOption({ index: 1 })
-    await expect(page.getByText(/加载中|可约|上一周/)).toBeVisible({ timeout: 5000 })
+    // Navigation controls should appear immediately
+    await expect(page.getByRole('button', { name: '上一周' })).toBeVisible()
+    await expect(page.getByRole('button', { name: '下一周' })).toBeVisible()
+    // Availability data loads automatically from the backend
     await expect(page.getByRole('button', { name: '可约' }).first()).toBeVisible({ timeout: 10000 })
   })
 
   test('navigate to book form and submit', async ({ page }) => {
     await page.goto('/')
-    await page.getByLabel(/选择辅导员/).selectOption({ index: 1 })
     await expect(page.getByRole('button', { name: '可约' }).first()).toBeVisible({ timeout: 10000 })
     await page.getByRole('button', { name: '可约' }).first().click()
     await expect(page).toHaveURL(/\/book/)
