@@ -145,8 +145,9 @@ export default function BookPage() {
           </select>
         </div>
         <div className="field">
-          <label>谈话内容/主题 *</label>
+          <label htmlFor="content">谈话内容/主题 *</label>
           <textarea
+            id="content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={4}
@@ -155,8 +156,9 @@ export default function BookPage() {
           />
         </div>
         <div className="field">
-          <label>联系人姓名 *</label>
+          <label htmlFor="contact-name">联系人姓名 *</label>
           <input
+            id="contact-name"
             type="text"
             value={contactName}
             onChange={(e) => setContactName(e.target.value)}
@@ -165,8 +167,9 @@ export default function BookPage() {
           />
         </div>
         <div className="field">
-          <label>联系电话</label>
+          <label htmlFor="contact-phone">联系电话</label>
           <input
+            id="contact-phone"
             type="tel"
             value={contactPhone}
             onChange={(e) => setContactPhone(e.target.value)}
@@ -174,8 +177,9 @@ export default function BookPage() {
           />
         </div>
         <div className="field">
-          <label>联系邮箱</label>
+          <label htmlFor="contact-email">联系邮箱</label>
           <input
+            id="contact-email"
             type="email"
             value={contactEmail}
             onChange={(e) => setContactEmail(e.target.value)}

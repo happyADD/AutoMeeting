@@ -13,8 +13,14 @@ export default defineConfig({
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
-    command: 'npm run dev',
+    // In CI the frontend is pre-built by npm run build, so use `vite preview`
+    // which serves the static dist/ folder instantly and binds explicitly to
+    // 127.0.0.1.  Locally, use the live dev server as before.
+    command: process.env.CI
+      ? 'npm run preview -- --port 5173 --host 127.0.0.1'
+      : 'npm run dev',
     url: 'http://127.0.0.1:5173',
     reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000,
   },
 })
