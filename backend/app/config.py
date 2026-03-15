@@ -1,7 +1,16 @@
 """Application configuration from environment variables."""
+import os
 from pydantic_settings import BaseSettings
 from functools import lru_cache
 from typing import List, Union
+
+# On Vercel (and other serverless platforms), the filesystem is read-only except /tmp.
+# Use /tmp for SQLite when DATABASE_URL is not set explicitly and we're on Vercel.
+_default_db_url = (
+    "sqlite+aiosqlite:////tmp/automeeting.db"
+    if os.environ.get("VERCEL")
+    else "sqlite+aiosqlite:///./automeeting.db"
+)
 
 
 def parse_list(v: Union[str, List[str]]) -> List[str]:
@@ -16,8 +25,9 @@ def parse_list(v: Union[str, List[str]]) -> List[str]:
 class Settings(BaseSettings):
     """App settings loaded from env."""
 
-    # Database - defaults to SQLite for local development, override with DATABASE_URL env var
-    database_url: str = "sqlite+aiosqlite:///./automeeting.db"
+    # Database - defaults to SQLite for local development, override with DATABASE_URL env var.
+    # On Vercel, /tmp is the only writable directory, so we use it by default.
+    database_url: str = _default_db_url
 
     # Database connection pool settings (for PostgreSQL)
     db_pool_size: int = 5
