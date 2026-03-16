@@ -37,3 +37,7 @@ htmlcov/
 *.db
 *.sqlite
 *.sqlite3
+
+# Playwright test artifacts
+frontend/test-results/
+frontend/playwright-report/

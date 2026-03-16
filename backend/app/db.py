@@ -58,3 +58,29 @@ async def init_db():
     from app.models import Counselor, SlotTemplate, Appointment  # noqa: F401 - register models
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
+
+async def seed_db():
+    """Seed initial counselors and slot templates if the database is empty."""
+    from sqlalchemy import select
+    from app.models import Counselor, SlotTemplate
+
+    async with AsyncSessionLocal() as session:
+        counselor_result = await session.execute(select(Counselor).limit(1))
+        if not counselor_result.scalar_one_or_none():
+            for emp_id, name, email in [
+                ("T001", "张老师", "zhang@example.com"),
+                ("T002", "李老师", "li@example.com"),
+                ("T003", "王老师", "wang@example.com"),
+            ]:
+                session.add(Counselor(employee_id=emp_id, name=name, email=email, is_active=True))
+
+        slot_result = await session.execute(select(SlotTemplate).limit(1))
+        if not slot_result.scalar_one_or_none():
+            for period, hour in [
+                ("morning", 8), ("morning", 9), ("morning", 10), ("morning", 11),
+                ("afternoon", 14), ("afternoon", 15), ("afternoon", 16), ("afternoon", 17),
+            ]:
+                session.add(SlotTemplate(period=period, hour=hour))
+
+        await session.commit()
